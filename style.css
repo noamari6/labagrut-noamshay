@@ -151,3 +151,53 @@ iframe {
     font-size: 1.8rem;
   }
 }
+
+/* Chat widget styles */
+.chat-container {
+  max-width: 600px;
+  margin: 2rem auto;
+  padding: 1rem;
+  border: 1px solid #ccc;
+  background-color: #fdfdfd;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.chat-container label {
+  font-weight: bold;
+  display: block;
+  margin-bottom: 0.5rem;
+}
+
+.chat-container input[type="text"],
+.chat-container input[type="password"] {
+  width: 100%;
+  padding: 0.5rem;
+  margin-bottom: 0.5rem;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  font-size: 1rem;
+}
+
+.chat-container #messages {
+  height: 300px;
+  overflow-y: auto;
+  border: 1px solid #ddd;
+  padding: 0.5rem;
+  margin-bottom: 0.5rem;
+  background-color: #fff;
+}
+
+.chat-container button {
+  padding: 0.5rem 1rem;
+  background-color: #007acc;
+  color: #fff;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 1rem;
+}
+
+.chat-container button:hover {
+  background-color: #005fa3;
+}

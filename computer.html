@@ -37,11 +37,68 @@
     <p>
       <a class="button" href="https://chatgpt.com/g/g-686ce54018388191b386e43b453632f1-lymvd-lmbkhn-bmbnh-mkhshbym" target="_blank" rel="noopener">פתיחה בחלון חדש</a>
     </p>
-    <!-- Embedded chat iframe -->
-    <iframe src="https://chatgpt.com/g/g-686ce54018388191b386e43b453632f1-lymvd-lmbkhn-bmbnh-mkhshbym" allow="clipboard-write;" title="בוט למבנה מחשבים"></iframe>
+    <!-- Embedded chat interface using OpenAI API. Users must provide their own API key. -->
+    <div class="chat-container">
+      <label for="apikey">מפתח API של OpenAI:</label>
+      <input type="password" id="apikey" placeholder="הכנס מפתח API (לא מאוחסן)">
+      <div id="messages"></div>
+      <input type="text" id="userInput" placeholder="כתוב כאן את ההודעה..." />
+      <button onclick="sendMessage()">שלח</button>
+    </div>
   </div>
   <footer>
     &copy; 2025 הנדסת חשמל – כל הזכויות שמורות.
   </footer>
+
+  <script>
+    // Simple chat interface using OpenAI API.
+    // The conversation messages are stored in this array.
+    const messages = [
+      { role: "system", content: "You are a helpful assistant for a computer structure course. Answer in Hebrew when possible." }
+    ];
+
+    async function sendMessage() {
+      const apiKey = document.getElementById('apikey').value.trim();
+      const inputEl = document.getElementById('userInput');
+      const msg = inputEl.value.trim();
+      const messagesEl = document.getElementById('messages');
+      if (!apiKey) {
+        alert('אנא הזן מפתח API תקף. המפתח לא מאוחסן באף מקום.');
+        return;
+      }
+      if (!msg) return;
+      // Show user message in chat
+      messages.push({ role: 'user', content: msg });
+      messagesEl.innerHTML += `<div><strong>את/ה:</strong> ${msg}</div>`;
+      inputEl.value = '';
+      // Call OpenAI API
+      try {
+        const response = await fetch('https://api.openai.com/v1/chat/completions', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': 'Bearer ' + apiKey
+          },
+          body: JSON.stringify({
+            model: 'gpt-3.5-turbo',
+            messages: messages,
+            max_tokens: 800,
+            temperature: 0.7
+          })
+        });
+        if (!response.ok) {
+          throw new Error('Response not OK');
+        }
+        const data = await response.json();
+        const reply = data.choices && data.choices.length ? data.choices[0].message.content : 'שגיאה בהבאת התשובה.';
+        messages.push({ role: 'assistant', content: reply });
+        messagesEl.innerHTML += `<div><strong>בוט:</strong> ${reply}</div>`;
+        messagesEl.scrollTop = messagesEl.scrollHeight;
+      } catch (err) {
+        console.error(err);
+        alert('אירעה שגיאה בשליחת ההודעה. בדוק/י את החיבור לאינטרנט ואת מפתח ה-API.');
+      }
+    }
+  </script>
 </body>
 </html>
