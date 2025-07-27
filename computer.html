@@ -66,7 +66,10 @@
       inputEl.value = '';
       // Call dynamic server which proxies OpenAI
       try {
-        const response = await fetch('https://labagrut-noamshay.onrender.com/chat', {
+        // Send the conversation to the dynamic server hosted on Railway. This endpoint accepts
+        // POST requests and proxies the messages to the OpenAI API. If you deploy the server
+        // elsewhere, replace the URL below with your own /chat endpoint.
+        const response = await fetch('https://web-production-c993.up.railway.app/chat', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json'
